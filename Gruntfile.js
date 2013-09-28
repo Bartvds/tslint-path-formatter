@@ -1,11 +1,12 @@
 module.exports = function (grunt) {
 	'use strict';
 
-	var path = require('path');
-
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-tslint');
+	grunt.loadNpmTasks('grunt-run-grunt');
+	grunt.loadNpmTasks('grunt-mocha-test');
+
+	var path = require('path');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -20,17 +21,43 @@ module.exports = function (grunt) {
 				'test/**/*.js'
 			]
 		},
+		run_grunt: {
+			test: {
+				options: {
+					log: false,
+					expectFail: true,
+					'no-color': true,
+					logFile: './tmp/output.txt',
+					process: function (res) {
+						var p = path.resolve('./test/fixtures/files/') + path.sep;
+						//why does .replace() only work once? weird
+						var actual = res.res.stdout.split(p).join('{{full}}');
+						grunt.file.write('./tmp/output-fixed.txt', actual);
+					}
+				},
+				src: ['test/Gruntfile.js']
+			}
+		},
 		tslint: {
-			options: {
-				configuration: grunt.file.readJSON(".tslintrc"),
-				formatter: path.resolve('./index')
-			},
-			files: {
-				src: ['test/fixtures/files/failureA.test.ts', 'test/fixtures/files/failureB.test.ts']
+			demo: {
+				options: {
+					configuration: grunt.file.readJSON('.tslintrc'),
+					formatter: path.resolve('./index')
+				},
+				src: ['./test/fixtures/files/**/*.ts']
+			}
+		},
+		mochaTest: {
+			test: {
+				options: {
+					reporter: 'Spec'
+				},
+				src: ['./test/*.test.js']
 			}
 		}
 	});
 	grunt.registerTask('default', ['test']);
-	grunt.registerTask('test', ['jshint', 'tslint']);
+	grunt.registerTask('test', ['jshint', 'run_grunt:test', 'mochaTest:test']);
+	grunt.registerTask('dev', ['jshint', 'tslint:demo']);
 
 };

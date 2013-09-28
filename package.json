@@ -1,32 +1,34 @@
 {
-  "name": "tslint-path-reporter",
+  "name": "tslint-path-formatter",
   "version": "0.1.0",
-  "description": "TSLint reporter that displays absolute path with row/column on one line",
+  "description": "TSLint formatter that displays absolute path with row/column on one line",
   "main": "index.js",
   "scripts": {
     "test": "grunt test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bartvds/tslint-path-reporter"
+    "url": "https://github.com/Bartvds/tslint-path-formatter"
   },
   "keywords": [
     "tslint",
-    "reporter"
+    "typescript",
+    "formatter"
   ],
   "author": "Bart van der Schoor",
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/Bartvds/tslint-path-reporter/issues"
+    "url": "https://github.com/Bartvds/tslint-path-formatter/issues"
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt-shell": "0.4.0",
     "grunt-cli": "0.1.9",
     "grunt": "0.4.1",
     "grunt-tslint": "git://github.com/Bartvds/grunt-tslint/#test",
     "grunt-contrib-jshint": "0.6.4",
-    "jshint-path-reporter": "~0.1.3"
+    "jshint-path-formatter": "0.1.3",
+    "grunt-run-grunt": "0.1.0",
+    "grunt-mocha-test": "~0.7.0"
   }
 }

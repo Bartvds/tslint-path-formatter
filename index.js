@@ -157,10 +157,10 @@ module.exports = function () {
 				fileReport = warn(fileReport);
 			}
 			if (errorCount === 0) {
-				writeln(report + ok('no errors') + ' in ' + fileReport);
+				writeln(report + ok('no errors')); // + ' in ' + fileReport);
 			}
 			else {
-				writeln(report + fail(errorCount + ' error' + ((errorCount === 1) ? '' : 's')) + ' in ' + fileReport + '\n');
+				writeln(report + fail(errorCount + ' error' + ((errorCount === 1) ? '' : 's'))+ '\n'); // + ' in ' + fileReport + '\n');
 			}
 
 			return output;
