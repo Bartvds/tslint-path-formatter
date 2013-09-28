@@ -76,8 +76,8 @@ module.exports = function () {
 				var lineAndCharacter = failure.getStartPosition().getLineAndCharacter();
 				res.errors.push({
 					reason: failure.getFailure(),
-					line: lineAndCharacter.line(),
-					character: lineAndCharacter.character()
+					line: lineAndCharacter.line() + 1,
+					character: lineAndCharacter.character() + 1
 				});
 			});
 
@@ -157,7 +157,7 @@ module.exports = function () {
 				fileReport = warn(fileReport);
 			}
 			if (errorCount === 0) {
-				writeln(report + ok('no errors')); // + ' in ' + fileReport);
+				//writeln(report + ok('no errors')); // + ' in ' + fileReport);
 			}
 			else {
 				writeln(report + fail(errorCount + ' error' + ((errorCount === 1) ? '' : 's'))+ '\n'); // + ' in ' + fileReport + '\n');
