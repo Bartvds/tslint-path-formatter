@@ -35,7 +35,7 @@ grunt.initConfig({
 	tslint: {
 		options: {
 			configuration: '.tslintrc',
-			reporter: 'tslint-path-formatter'
+			formatter: 'tslint-path-formatter'
 		}),
 		source: {
 			//..
