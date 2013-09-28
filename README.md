@@ -32,9 +32,9 @@ Then pass name of the module (or anything acceptable to `require.resolve()`) as 
 ````js
 grunt.initConfig({
 	//..
-	jshint: {
+	tslint: {
 		options: {
-			jshintrc: '.tslintrc',
+			configuration: '.tslintrc',
 			reporter: 'tslint-path-formatter'
 		}),
 		source: {
