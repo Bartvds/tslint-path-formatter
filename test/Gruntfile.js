@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		tslint: {
 			options: {
-				configuration: grunt.file.readJSON('../.tslintrc'),
+				configuration: grunt.file.readJSON('./fixtures/tslint.json'),
 				formatter: path.resolve('./../index')
 			},
 			files: {

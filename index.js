@@ -44,126 +44,130 @@ var writeln = function (str) {
 };
 var hasProp = Object.prototype.hasOwnProperty;
 
-module.exports = function () {
-	return {
-		name: 'tslint-path-reporter',
-		getName: function () {
-			return this.name;
-		},
-		options: options,
-		color: function (enable) {
-			options.style = enable ? 'ansi' : false;
-		},
-		format: function (failures) {
-			var output = "";
+function PathFormatter() {
 
-			var files = {};
-			var data = [];
+}
+PathFormatter.prototype = Object.create({
+	name: 'tslint-path-formatter',
+	getName: function () {
+		return this.name;
+	},
+	format: function (failures) {
+		var output = "";
 
-			failures.forEach(function (failure) {
-				var fileName = failure.getFileName();
-				var res;
-				if (hasProp.call(files, fileName)) {
-					res = files[fileName];
-				}
-				else {
-					files[fileName] = res = {
-						file: failure.getFileName(),
-						errors: []
-					};
-					data.push(res);
-				}
-				var lineAndCharacter = failure.getStartPosition().getLineAndCharacter();
-				res.errors.push({
-					reason: failure.getFailure(),
-					line: lineAndCharacter.line() + 1,
-					character: lineAndCharacter.character() + 1
-				});
-			});
+		var files = {};
+		var data = [];
 
-			var fileCount = data.length;
-			var errorCount = 0;
-			var i = 0;
-
-			data.forEach(function (res) {
-				i++;
-				var errors = res.errors;
-				var file;
-				if (res.file) {
-					file = path.resolve(res.file);
-				}
-				if (!file) {
-					file = '<unknown file>';
-				}
-				var head = 'File \'' + res.file + '\'';
-				if (!errors || errors.length === 0) {
-					//writeln(ok('>> ') + head + ' ' + ok('OK') + (i === fileCount ? '\n' : ''));
-				} else {
-					writeln(fail('>> ') + head);// + ' ' + fail(errors.length + ' error' + (errors.length == 1 ? '' : 's')));
-					errorCount += errors.length;
-					errors.sort(function (a, b) {
-						if (a && !b) {
-							return -1;
-						}
-						else if (!a && b) {
-							return 1;
-						}
-						if (a.line < b.line) {
-							return -1;
-						}
-						else if (a.line > b.line) {
-							return 1;
-						}
-						if (a.character < b.character) {
-							return -1;
-						}
-						else if (a.character > b.character) {
-							return 1;
-						}
-						return 0;
-					});
-
-					errors.forEach(function (err) {
-						var str = '';
-						if (!err) {
-							return;
-						}
-						var e;
-						// '(error)'
-						if (err.id) {
-							e = err.id.match(/[\w ]+/);
-							if (e) {
-								e = e[0];
-							}
-						}
-						if (!e) {
-							e = 'error';
-						}
-
-						str += fail(e.toUpperCase()) + ' at ' + file + '(' + err.line + ',' + err.character + '):';
-						str += '\n' + (err.code ? warn('[' + err.code + ']') + ' ' : '');
-						str += warn(err.reason ? err.reason : '<undefined reason>');
-						if (typeof err.evidence !== 'undefined') {
-							str += '\n' + err.evidence;
-						}
-						writeln(str);
-					});
-					writeln('');
-				}
-			});
-			var report = 'TSLint found ';
-			var fileReport = fileCount + ' file' + (fileCount === 1 ? '' : 's');
-			if (fileCount === 0) {
-				fileReport = warn(fileReport);
-			}
-			if (errorCount === 0) {
-				//writeln(report + ok('no errors')); // + ' in ' + fileReport);
+		failures.forEach(function (failure) {
+			var fileName = failure.getFileName();
+			var res;
+			if (hasProp.call(files, fileName)) {
+				res = files[fileName];
 			}
 			else {
-				writeln(report + fail(errorCount + ' error' + ((errorCount === 1) ? '' : 's'))+ '\n'); // + ' in ' + fileReport + '\n');
+				files[fileName] = res = {
+					file: failure.getFileName(),
+					errors: []
+				};
+				data.push(res);
 			}
+			var lineAndCharacter = failure.getStartPosition().getLineAndCharacter();
+			res.errors.push({
+				reason: failure.getFailure(),
+				line: lineAndCharacter.line() + 1,
+				character: lineAndCharacter.character() + 1
+			});
+		});
 
-			return output;
+		var fileCount = data.length;
+		var errorCount = 0;
+		var i = 0;
+
+		data.forEach(function (res) {
+			i++;
+			var errors = res.errors;
+			var file;
+			if (res.file) {
+				file = path.resolve(res.file);
+			}
+			if (!file) {
+				file = '<unknown file>';
+			}
+			var head = 'File \'' + res.file + '\'';
+			if (!errors || errors.length === 0) {
+				//writeln(ok('>> ') + head + ' ' + ok('OK') + (i === fileCount ? '\n' : ''));
+			} else {
+				writeln(fail('>> ') + head);// + ' ' + fail(errors.length + ' error' + (errors.length == 1 ? '' : 's')));
+				errorCount += errors.length;
+				errors.sort(function (a, b) {
+					if (a && !b) {
+						return -1;
+					}
+					else if (!a && b) {
+						return 1;
+					}
+					if (a.line < b.line) {
+						return -1;
+					}
+					else if (a.line > b.line) {
+						return 1;
+					}
+					if (a.character < b.character) {
+						return -1;
+					}
+					else if (a.character > b.character) {
+						return 1;
+					}
+					return 0;
+				});
+
+				errors.forEach(function (err) {
+					var str = '';
+					if (!err) {
+						return;
+					}
+					var e;
+					// '(error)'
+					if (err.id) {
+						e = err.id.match(/[\w ]+/);
+						if (e) {
+							e = e[0];
+						}
+					}
+					if (!e) {
+						e = 'error';
+					}
+
+					str += fail(e.toUpperCase()) + ' at ' + file + '(' + err.line + ',' + err.character + '):';
+					str += '\n' + (err.code ? warn('[' + err.code + ']') + ' ' : '');
+					str += warn(err.reason ? err.reason : '<undefined reason>');
+					if (typeof err.evidence !== 'undefined') {
+						str += '\n' + err.evidence;
+					}
+					writeln(str);
+				});
+				writeln('');
+			}
+		});
+		var report = 'TSLint found ';
+		var fileReport = fileCount + ' file' + (fileCount === 1 ? '' : 's');
+		if (fileCount === 0) {
+			fileReport = warn(fileReport);
 		}
-	};
+		if (errorCount === 0) {
+			//writeln(report + ok('no errors')); // + ' in ' + fileReport);
+		}
+		else {
+			writeln(report + fail(errorCount + ' error' + ((errorCount === 1) ? '' : 's')) + '\n'); // + ' in ' + fileReport + '\n');
+		}
+
+		return output;
+	}
+});
+module.exports = {
+	Formatter: PathFormatter,
+	options: options,
+	color: function (enable) {
+		options.style = enable ? 'ansi' : false;
+	}
 };
