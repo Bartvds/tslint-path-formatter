@@ -4,8 +4,6 @@
 
 > TSLint formatter that displays absolute error path with row/column on one line.
 
-:warning: This is a pre-alpha version that depends on code that yet has to land in the TSLint release.
-
 A console formatter similar to the default output except the report displays absolute file paths with the row/column appended in a parsable format. The TypeScript equivalent of [jshint-path-reporter](https://github.com/Bartvds/jshint-path-reporter).
 
 This allows convenient use of [TSLint](https://github.com/palantir/tslint) from within tools that apply a filter RegExp to console views to turn error lines into clickable links to instantly navigate to the error location.
