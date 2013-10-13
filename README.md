@@ -32,7 +32,7 @@ grunt.initConfig({
 	//..
 	tslint: {
 		options: {
-			configuration: 'tslint.json',
+			configuration: grunt.file.readJSON("tslint.json"),
 			formatter: 'tslint-path-formatter'
 		}),
 		source: {
