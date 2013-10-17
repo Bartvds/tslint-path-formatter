@@ -1,7 +1,7 @@
 describe('tslint-path-formatter', function() {
 
 	var grunt = require('grunt');
-	var assert = require('assert');
+	var assert = require('chai').assert;
 
 	it('should format failures correctly', function(){
 		var actual = grunt.file.read('./tmp/output.txt').replace(/\r?\n/g, '\n');
