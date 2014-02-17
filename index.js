@@ -44,6 +44,14 @@ var writeln = function (str) {
 };
 var hasProp = Object.prototype.hasOwnProperty;
 
+function repeat(len, str) {
+	var ret = '';
+	while (ret.length < len) {
+		ret += str;
+	}
+	return ret;
+}
+
 function PathFormatter() {
 
 }
@@ -57,6 +65,8 @@ PathFormatter.prototype = Object.create({
 
 		var files = {};
 		var data = [];
+
+		var codeMaxLen = 0;
 
 		failures.forEach(function (failure) {
 			var fileName = failure.getFileName();
@@ -72,11 +82,14 @@ PathFormatter.prototype = Object.create({
 				data.push(res);
 			}
 			var lineAndCharacter = failure.getStartPosition().getLineAndCharacter();
-			res.errors.push({
+			var item = {
 				reason: failure.getFailure(),
 				line: lineAndCharacter.line() + 1,
-				character: lineAndCharacter.character() + 1
-			});
+				character: lineAndCharacter.character() + 1,
+				code: (failure.getRuleName ? failure.getRuleName() : '')
+			};
+			res.errors.push(item);
+			codeMaxLen = item.code ? Math.max(item.code.length, codeMaxLen) : codeMaxLen;
 		});
 
 		var fileCount = data.length;
@@ -139,7 +152,12 @@ PathFormatter.prototype = Object.create({
 					}
 
 					str += fail(e.toUpperCase()) + ' at ' + file + '(' + err.line + ',' + err.character + '):';
-					str += '\n' + (err.code ? warn('[' + err.code + ']') + ' ' : '');
+
+					str += '\n';
+					if (err.code) {
+						str += warn('[' + err.code + ']') + repeat(codeMaxLen + 1 - err.code.length, ' ');
+					}
+
 					str += warn(err.reason ? err.reason : '<undefined reason>');
 					if (typeof err.evidence !== 'undefined') {
 						str += '\n' + err.evidence;

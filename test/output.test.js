@@ -4,8 +4,8 @@ describe('tslint-path-formatter', function() {
 	var assert = require('chai').assert;
 
 	it('should format failures correctly', function(){
-		var actual = grunt.file.read('./tmp/output.txt').replace(/\r?\n/g, '\n');
-		var expected = grunt.file.read('./test/fixtures/files/output.txt').replace(/\r?\n/g, '\n');
+		var actual = grunt.file.read('./tmp/output.txt').replace(/\r?\n/g, '\n').replace(/\s$/, '');
+		var expected = grunt.file.read('./test/fixtures/files/output.txt').replace(/\r?\n/g, '\n').replace(/\s$/, '');
 
 		assert.equal(actual, expected);
 	});

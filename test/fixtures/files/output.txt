@@ -1,25 +1,25 @@
 Running "tslint:files" (tslint) task
 >> File 'fixtures/files/failureA.test.ts'
 ERROR at {{full}}failureA.test.ts(2,6):
-variable name must be in camelcase or uppercase
+[variable-name]    variable name must be in camelcase or uppercase
 ERROR at {{full}}failureA.test.ts(4,3):
-duplicate key 'a'
+[no-duplicate-key] duplicate key 'a'
 ERROR at {{full}}failureA.test.ts(5,3):
-missing semicolon
+[semicolon]        missing semicolon
 ERROR at {{full}}failureA.test.ts(6,1):
-missing whitespace
+[whitespace]       missing whitespace
 ERROR at {{full}}failureA.test.ts(6,2):
-file should end with a newline
+[eofline]          file should end with a newline
 
 TSLint found 5 errors
 
 >> File 'fixtures/files/failureB.test.ts'
 ERROR at {{full}}failureB.test.ts(2,11):
-missing semicolon
+[semicolon]  missing semicolon
 ERROR at {{full}}failureB.test.ts(3,1):
-missing whitespace
+[whitespace] missing whitespace
 ERROR at {{full}}failureB.test.ts(3,9):
-missing whitespace
+[whitespace] missing whitespace
 
 TSLint found 3 errors
 
