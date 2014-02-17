@@ -60,6 +60,7 @@ require('tslint-path-formatter').color(false);
 
 ## History
 
+* 0.1.1 - Add support for rule names in output
 * 0.1.0 - First release mutated from [jshint-path-reporter](https://github.com/Bartvds/jshint-path-reporter) & [eslint-path-formatter](https://github.com/Bartvds/eslint-path-formatter).
 
 ## Build
